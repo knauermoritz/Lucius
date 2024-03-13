@@ -53,15 +53,26 @@ def vision(frames, prompt):
     response_text = message.content[0].text
     return response_text
 
-def get_transcript(url):
+def get_transcript(url, language='en'):
     match = re.search(r'v=([^&#]+)', url)
     if match:
         video_id = match.group(1)
     else:
         raise ValueError("Invalid YouTube link")
-    transcript = YouTubeTranscriptApi.get_transcript(video_id)
-    return ' '.join([entry['text'] for entry in transcript])
 
+    try:
+        transcript = YouTubeTranscriptApi.get_transcript(video_id, languages=[language])
+        return ' '.join([entry['text'] for entry in transcript])
+    except NoTranscriptFound:
+        # Try to find the available transcript languages
+        available_languages = YouTubeTranscriptApi.list_transcripts(video_id)
+        if available_languages:
+            available_language_codes = [lang.language_code for lang in available_languages.transcript_list.entries]
+            st.warning(f"No transcript available in {language}. Available languages: {', '.join(available_language_codes)}")
+            return ""
+        else:
+            st.warning("No transcripts available for this video.")
+            return ""
 def save_file(md):
     filename = "output.md"
     with open(filename, "w", encoding="utf-8") as file:
