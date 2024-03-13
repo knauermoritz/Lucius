@@ -53,7 +53,7 @@ def vision(frames, prompt):
     response_text = message.content[0].text
     return response_text
 
-def get_transcript(url, language='en'):
+def get_transcript(url, language):
     match = re.search(r'v=([^&#]+)', url)
     if match:
         video_id = match.group(1)
@@ -108,7 +108,11 @@ def main():
 
     if button.button("Generate Transcript"):
         with st.spinner("Processing..."):
-            transcript = get_transcript(video_url)
+            try:
+                transcript = get_transcript(video_url, 'en')
+            except:
+                transcript = get_transcript(video_url, 'de')
+            ex
             video_frames = get_frames(video_url, num_frames)
             prompt = f"{system_prompt}, Transcript: {transcript}, Video link: {video_url}"
             md = vision(video_frames, prompt)
