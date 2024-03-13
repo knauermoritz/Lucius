@@ -12,6 +12,7 @@ client = anthropic.Anthropic(
     api_key=st.secrets["api_key"]
 )
 
+
 def get_frames(video_url, num_frames):
     yt = YouTube(video_url)
     video = yt.streams.filter(progressive=True, file_extension='mp4').order_by('resolution').desc().first()
@@ -117,6 +118,17 @@ def main():
             md = vision(video_frames, prompt)
             save_file(formatting(md))
             st.markdown(md)
+
+            # Add download button
+            def file_downloader(file_path):
+                with open(file_path, "rb") as f:
+                    data = f.read()
+                    b64 = base64.b64encode(data).decode()
+                    href = f'<a href="data:file/txt;base64,{b64}" download="{os.path.basename(file_path)}">Download {os.path.basename(file_path)} file</a>'
+                    return href
+
+            st.markdown(file_downloader("output.md"), unsafe_allow_html=True)
+
             title.empty()
             url.empty()
             slider.empty()
