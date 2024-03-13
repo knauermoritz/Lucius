@@ -1,4 +1,4 @@
 pytube
 youtube-transcript-api
 opencv-python
-anthropicv
+anthropic
