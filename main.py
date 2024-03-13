@@ -112,7 +112,6 @@ def main():
                 transcript = get_transcript(video_url, 'en')
             except:
                 transcript = get_transcript(video_url, 'de')
-            ex
             video_frames = get_frames(video_url, num_frames)
             prompt = f"{system_prompt}, Transcript: {transcript}, Video link: {video_url}"
             md = vision(video_frames, prompt)
