@@ -93,7 +93,7 @@ def main():
     else:
         system_prompt = "You are an AI that creates Markdown code for video transcripts. Create a Markdown code for the previous transcript. It should be well structured and easy to read. Write only the code. Use features such as table headings and subheadings. If a section is important to you, cite it, but do not include an author. Cite the source at the end. Use tables for comparisons between different things. Present everything well. Be neutral and reproduce the video well. All information should be reproduced. If the video contains programming code, write it in a code block. You also get vidio frames. they scould help you to describe the style or to transcribe things like code or subtitles"
 
-    num_frames = slider.slider("Number of frames", min_value=1, max_value=20, value=2)
+    num_frames = slider.slider("Number of frames", min_value=2, max_value=20, value=2)
 
     if button.button("Generate Transcript"):
         with st.spinner("Processing..."):
